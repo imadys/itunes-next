@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Clock, Heart, Home, Search } from "lucide-react";
 
 import {
     Sidebar,
@@ -10,33 +10,34 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Image from "next/image"
+} from "@/components/ui/sidebar";
+import Image from "next/image";
+import Link from "next/link";
 
 // Menu items.
 const items = [
     {
         title: "الرئيسية",
-        url: "#",
+        url: "/",
         icon: Home,
     },
     {
         title: "إستكشف",
-        url: "#",
-        icon: Inbox,
+        url: "/explore",
+        icon: Search,
     }
 ];
 
 const items2 = [
     {
         title: "المفضلة",
-        url: "#",
-        icon: Inbox,
+        url: "/favorites",
+        icon: Heart,
     },
     {
         title: "شاهدته مؤخرًا",
-        url: "#",
-        icon: Home,
+        url: "/recently-watched",
+        icon: Clock,
     }
 ]
 
@@ -44,7 +45,9 @@ export function AppSidebar() {
     return (
         <Sidebar side="right">
             <SidebarHeader>
-                <Image src={"/logo-black.png"} alt="Logo" width={100} height={100} />
+                <Link href="/">
+                    <Image src={"/logo-black.png"} alt="Logo" width={100} height={100} />
+                </Link>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarMenu>
