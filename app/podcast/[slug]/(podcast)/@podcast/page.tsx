@@ -5,6 +5,7 @@ import { VideoIcon } from "lucide-react";
 import Image from "next/image";
 import PlayButton from "@/components/play-button";
 import FavoriteButton from "@/components/podcasts/favorite-podcast-button";
+import { notFound } from "next/navigation";
 
 export default async function ({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -14,6 +15,10 @@ export default async function ({ params }: { params: Promise<{ slug: string }> }
             tags: [`podcasts-${slug}`],
         }
     }) as Podcast;
+
+    if(!podcast) {
+        return notFound();
+    }
 
     const latestEpisode = await api.get(`/episodes/podcast/${slug}/latest`, {
         next: {

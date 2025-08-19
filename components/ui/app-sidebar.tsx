@@ -33,11 +33,6 @@ const items2 = [
         title: "المفضلة",
         url: "/favorites",
         icon: Heart,
-    },
-    {
-        title: "شاهدته مؤخرًا",
-        url: "/recently-watched",
-        icon: Clock,
     }
 ]
 

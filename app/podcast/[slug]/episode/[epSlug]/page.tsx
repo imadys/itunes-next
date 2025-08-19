@@ -6,6 +6,13 @@ import { Episode } from "@/lib/types/podcast";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+export async function generateMetadata({ params }: { params: Promise<{ epSlug: string }> }) {
+    const { epSlug } = await params;
+    const episode = await api.get(`/episodes/${epSlug}`) as Episode;
+    return {
+        title: `${episode.title} - ${episode.podcast.trackName}`,
+    }
+}
 export default async function EpisodePage({ params }: { params: Promise<{ epSlug: string }> }) {
 
     const { epSlug } = await params;
