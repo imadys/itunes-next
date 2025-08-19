@@ -30,7 +30,7 @@ export function PageHeader() {
                 <Search className="w-4 h-4 absolute top-1/2 -translate-y-1/2 end-2 cursor-pointer" onClick={handleSearch} />
                 <Input 
                     placeholder="ابحث عن فئة" 
-                    className="w-fit pe-8" 
+                    className="w-full pe-8" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleKeyDown}

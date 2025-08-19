@@ -48,10 +48,11 @@ export default function AudioPlayer() {
     seek(newTime);
   };
 
-  const handleProgressMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleProgressStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const rect = e.currentTarget.getBoundingClientRect();
-    const percentage = (rect.right - e.clientX) / rect.width; // Adjusted for RTL
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const percentage = (rect.right - clientX) / rect.width; // Adjusted for RTL
     const newTime = percentage * duration;
     setTempTime(newTime);
   };
@@ -59,36 +60,109 @@ export default function AudioPlayer() {
   useEffect(() => {
     if (!isDragging) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
       const progressBar = document.getElementById('progress-bar');
       if (!progressBar) return;
       
       const rect = progressBar.getBoundingClientRect();
-      const percentage = Math.max(0, Math.min(1, (rect.right - e.clientX) / rect.width)); // Adjusted for RTL
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const percentage = Math.max(0, Math.min(1, (rect.right - clientX) / rect.width)); // Adjusted for RTL
       const newTime = percentage * duration;
       setTempTime(newTime);
     };
 
-    const handleMouseUp = () => {
+    const handleEnd = () => {
       setIsDragging(false);
       seek(tempTime);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('touchend', handleEnd);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('touchend', handleEnd);
     };
   }, [isDragging, duration, tempTime, seek]);
 
   if (!currentEpisode) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-50" dir="rtl">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 sm:p-4 z-50" dir="rtl">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-4">
+        {/* Mobile Layout - Stacked */}
+        <div className="block md:hidden">
+          <div className="flex items-center gap-2 mb-3">
+            <FavoriteEpisodeButton podcastSlug={currentEpisode.podcast.id.toString()} slug={currentEpisode.id.toString()} isFavorite={currentEpisode.isFavorite} />
+            <Image 
+              src={currentEpisode.image ?? currentEpisode.podcast.artworkUrl600} 
+              alt={currentEpisode.title}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover"
+              width={48}
+              height={48}
+            />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium truncate text-sm text-right">{currentEpisode.title}</p>
+              <p className="text-xs text-gray-500 truncate text-right">{currentEpisode?.podcast?.collectionName}</p>
+            </div>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={togglePlay}
+              disabled={isLoading}
+              className="h-12 w-12 rounded-full bg-black text-white shrink-0"
+            >
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : isPlaying ? (
+                <Pause className="w-5 h-5" />
+              ) : (
+                <Play className="w-5 h-5" />
+              )}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={stop}
+              className="h-8 w-8 text-gray-500 hover:text-gray-700 shrink-0"
+              title="إغلاق المشغل"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 min-w-[40px] text-center">
+              {formatTime(duration)}
+            </span>
+            <div 
+              id="progress-bar"
+              className="flex-1 h-3 bg-gray-200 rounded-full cursor-pointer relative touch-manipulation"
+              onClick={handleProgressClick}
+              onMouseDown={handleProgressStart}
+              onTouchStart={handleProgressStart}
+            >
+              <div 
+                className="h-full bg-black rounded-full transition-all duration-150"
+                style={{ width: `${progressPercentage}%`, marginLeft: 'auto', marginRight: 0 }}
+              />
+              <div 
+                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-black rounded-full cursor-pointer"
+                style={{ right: `calc(${progressPercentage}% - 8px)` }}
+              />
+            </div>
+            <span className="text-xs text-gray-500 min-w-[40px] text-center">
+              {formatTime(isDragging ? tempTime : currentTime)}
+            </span>
+          </div>
+        </div>
+
+        {/* Desktop Layout - Horizontal */}
+        <div className="hidden md:flex items-center gap-4">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <FavoriteEpisodeButton podcastSlug={currentEpisode.podcast.id.toString()} slug={currentEpisode.id.toString()} isFavorite={currentEpisode.isFavorite} />
             <Image 
@@ -131,7 +205,8 @@ export default function AudioPlayer() {
                 id="progress-bar"
                 className="flex-1 h-2 bg-gray-200 rounded-full cursor-pointer relative"
                 onClick={handleProgressClick}
-                onMouseDown={handleProgressMouseDown}
+                onMouseDown={handleProgressStart}
+                onTouchStart={handleProgressStart}
               >
                 <div 
                   className="h-full bg-black rounded-full transition-all duration-150"
@@ -148,7 +223,7 @@ export default function AudioPlayer() {
             </div>
           </div>
 
-                    {/* Volume */}
+          {/* Volume - Desktop Only */}
           <div className="flex items-center gap-2 min-w-[200px]">
             <Slider
               value={[volume * 100]}
