@@ -1,26 +1,23 @@
+import EpisodeActions from "@/components/podcasts/episode-actions";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { api } from "@/lib/api";
 import { Episode } from "@/lib/types/podcast";
-import { Play } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function EpisodePage({ params }: { params: Promise<{ epSlug: string }> }) {
 
     const { epSlug } = await params;
     const episode = await api.get(`/episodes/${epSlug}`) as Episode;
-    console.log(episode, "episode");
     if (!episode) {
         return notFound();
     }
     return (
         <div>
             <div className="w-full border-b pb-4">
-                <div className="flex items-center gap-4 mb-4">
-                    <Image src={episode.image ?? episode.podcast.artworkUrl600} alt={episode.title} width={200} height={200} />
+                <div className="flex lg:flex-row flex-col items-center gap-4 mb-4">
+                    <Image className="w-full lg:w-[200px]" src={episode.image ?? episode.podcast.artworkUrl600} alt={episode.title} width={200} height={200} />
                     <div className="p-4 flex flex-col">
                         <h1 className="text-2xl font-bold mb-2">{episode.title}</h1>
                         <div className="flex items-center gap-2">
@@ -29,17 +26,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ epSlug
                             {episode.pubDate && <Badge variant="outline">تاريخ النشر {new Date(episode.pubDate).toLocaleDateString()}</Badge>}
                         </div>
 
-                        <div className="flex gap-4 mt-4">
-                            <Button>
-                                <Play className="w-4 h-4" />
-                                شاهد الحلقة
-                            </Button>
-                            <Button asChild variant="outline">
-                                <Link href={`/podcast/${episode.podcastId}`}>
-                                    العودة للقائمة
-                                </Link>
-                            </Button>
-                        </div>
+                        <EpisodeActions episode={episode} />
                     </div>
                 </div>
                 <Container>

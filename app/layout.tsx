@@ -4,6 +4,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import { AudioProvider } from "@/providers/audio-provider";
+import AudioPlayer from "@/components/audio-player";
 
 const IBMPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
@@ -30,8 +32,12 @@ export default function RootLayout({
           <AppSidebar />
           <main className="w-full">
             <PageHeader />
-
-            {children}
+            <AudioProvider>
+              <div className="pb-20">
+                {children}
+              </div>
+              <AudioPlayer />
+            </AudioProvider>
           </main>
         </SidebarProvider>
       </body>

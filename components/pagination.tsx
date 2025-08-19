@@ -55,7 +55,7 @@ export default function Pagination({ slug, page, pages, total }: { slug: string,
                 <ChevronRight className="w-4 h-4" />
                 السابق
             </Button>
-            <div className="flex gap-1 items-center">
+            <div className="lg:flex hidden gap-1 items-center">
                 {pageNumbers.map((pageNum, index) => (
                     pageNum === '...' ? (
                         <span key={`ellipsis-${index}`} className="px-2 text-gray-400">

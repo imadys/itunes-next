@@ -68,7 +68,7 @@ export default async function ExplorePage({
                     )}
                     
                     {podcasts.length > 0 && (
-                        <div className="grid lg:grid-cols-4 grid-cols-2 gap-6">
+                        <div className="grid lg:grid-cols-4 grid-cols-1 lg:gap-6 gap-4">
                             {podcasts.map((podcast) => (
                                 <PodcastCard key={podcast.id} podcast={podcast} />
                             ))}
@@ -94,7 +94,7 @@ export default async function ExplorePage({
                     )}
                     
                     {podcasts.length > 0 && (
-                        <div className="grid lg:grid-cols-4 grid-cols-2 gap-6">
+                        <div className="grid lg:grid-cols-4 grid-cols-1 lg:gap-6 gap-4">
                             {podcasts.map((podcast) => (
                                 <PodcastCard key={podcast.id} podcast={podcast} />
                             ))}
