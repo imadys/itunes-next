@@ -22,6 +22,7 @@ export type Podcast = {
   feedUrl: string;
   genres: string[];
   searchKeyword: string;
+  isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
