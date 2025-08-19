@@ -18,15 +18,23 @@ const PodcastsSkeleton = () => {
 
 export default async function Home() {
 
-  const podcasts = await api.get("/podcasts", {
+  let podcasts = await api.get("/podcasts", {
     next: {
       tags: ["podcasts"],
     },
     params: {
       limit: 10,
-      keyword: "thmanyah"
+      keyword: "ثمانية"
     }
   }) as ApiResponse<Podcast[]>;
+
+  if(podcasts.data.length === 0) {
+    podcasts = await api.post("/podcasts/search", 
+      {
+        keyword: "ثمانية"
+      }
+    ) as ApiResponse<Podcast[]>;
+  }
 
   return (
     <Container>

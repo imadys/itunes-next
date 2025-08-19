@@ -44,4 +44,6 @@ export type Episode = {
   createdAt: Date;
   updatedAt: Date;
   description: string;
+  shortDescription: string;
+  podcast: Podcast;
 }

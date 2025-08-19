@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
-export default function Pagination({ slug, page, pages }: { slug: string, page: number, pages: number }) {
+export default function Pagination({ slug, page, pages, total }: { slug: string, page: number, pages: number, total : number }) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(page);
 
@@ -38,6 +38,10 @@ export default function Pagination({ slug, page, pages }: { slug: string, page: 
 
         return rangeWithDots;
     };
+
+    if(total <= 10) {
+        return null;
+    }
 
     const pageNumbers = generatePageNumbers();
 
