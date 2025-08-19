@@ -14,5 +14,5 @@ cp .env.example .env
 
 ## Run
 ```bash
-npm run dev
+npmc run dev
 ```
