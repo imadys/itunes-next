@@ -3,28 +3,28 @@
 import { api } from './api'
 import { revalidateTag } from 'next/cache'
 
-export async function addPodcastToFavorites(slug: string) {
+export async function changePodCastFavoriteStatus(slug: string) {
   try {
     await api.post(`/podcasts/${slug}/favorite`)
-    
-    revalidateTag(`podcast-${slug}`)
-    
+
+    revalidateTag(`podcasts-${slug}`)
+
     return { success: true, message: 'تمت إضافة البودكاست للمفضلة بنجاح' }
   } catch (error) {
     console.error('Error adding podcast to favorites:', error)
     return { success: false, message: 'حدث خطأ أثناء إضافة البودكاست للمفضلة' }
   }
 }
-
-export async function removePodcastFromFavorites(slug: string) {
+export async function changeEpisodeFavoriteStatus(slug: string, podcastSlug: string) {
   try {
-    await api.delete(`/podcasts/${slug}/favorite`)
-    
-    revalidateTag(`podcast-${slug}`)
-    
-    return { success: true, message: 'تمت إزالة البودكاست من المفضلة بنجاح' }
+    await api.post(`/episodes/${slug}/favorite`)
+
+    revalidateTag(`episodes-${slug}`)
+    revalidateTag(`episodes-list-${podcastSlug}`)
+
+    return { success: true, message: 'تمت إضافة الحلقة للمفضلة بنجاح' }
   } catch (error) {
-    console.error('Error removing podcast from favorites:', error)
-    return { success: false, message: 'حدث خطأ أثناء إزالة البودكاست من المفضلة' }
+    console.error('Error adding episode to favorites:', error)
+    return { success: false, message: 'حدث خطأ أثناء إضافة الحلقة للمفضلة' }
   }
-} 
+}

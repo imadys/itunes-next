@@ -1,10 +1,12 @@
 "use client";
 
 import { useAudio } from "@/providers/audio-provider";
-import { Play, Pause, Volume2, VolumeX, X } from "lucide-react";
+import { Pause, Play, Volume2, VolumeX, X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
-import { useEffect, useState } from "react";
+import FavoriteEpisodeButton from "./podcasts/favorite-episode-button";
 
 function formatTime(seconds: number): string {
   if (isNaN(seconds)) return "0:00";
@@ -88,10 +90,13 @@ export default function AudioPlayer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3 min-w-0 flex-1">
-            <img 
-              src={currentEpisode.image} 
+            <FavoriteEpisodeButton podcastSlug={currentEpisode.podcast.id.toString()} slug={currentEpisode.id.toString()} isFavorite={currentEpisode.isFavorite} />
+            <Image 
+              src={currentEpisode.image ?? currentEpisode.podcast.artworkUrl600} 
               alt={currentEpisode.title}
               className="w-12 h-12 rounded-lg object-cover"
+              width={48}
+              height={48}
             />
             <div className="min-w-0">
               <p className="font-medium truncate text-sm text-right">{currentEpisode.title}</p>

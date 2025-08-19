@@ -1,30 +1,31 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { addPodcastToFavorites, removePodcastFromFavorites } from "@/lib/actions"
+import { changeEpisodeFavoriteStatus } from "@/lib/actions"
 import { Heart } from "lucide-react"
 import { useState, useTransition } from "react"
 
-interface FavoriteButtonProps {
+interface FavoriteEpisodeButtonProps {
   slug: string
   isFavorite?: boolean
   className?: string
+  podcastSlug: string
 }
 
-export default function FavoriteButton({ slug, isFavorite = false, className }: FavoriteButtonProps) {
-  const [favorite, setFavorite] = useState(isFavorite)
+export default function FavoriteEpisodeButton({ slug, isFavorite = false, className, podcastSlug }: FavoriteEpisodeButtonProps) {
+  const [favorite, setFavorite] = useState(isFavorite);
   const [isPending, startTransition] = useTransition()
 
   const handleFavoriteToggle = () => {
     startTransition(async () => {
       try {
         if (favorite) {
-          const result = await removePodcastFromFavorites(slug)
+          const result = await changeEpisodeFavoriteStatus(slug,podcastSlug);
           if (result.success) {
             setFavorite(false)
           }
         } else {
-          const result = await addPodcastToFavorites(slug)
+          const result = await changeEpisodeFavoriteStatus(slug,podcastSlug);
           if (result.success) {
             setFavorite(true)
           }
@@ -36,14 +37,14 @@ export default function FavoriteButton({ slug, isFavorite = false, className }: 
   }
 
   return (
-    <Button 
-      variant="outline" 
+    <Button
+      variant="ghost"
+      size={"sm"}
       onClick={handleFavoriteToggle}
       disabled={isPending}
       className={className}
     >
       <Heart className={`w-4 h-4 ${favorite ? 'fill-red-500 text-red-500' : ''}`} />
-      {favorite ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
     </Button>
   )
 } 

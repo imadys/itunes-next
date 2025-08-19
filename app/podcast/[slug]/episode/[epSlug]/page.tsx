@@ -9,7 +9,11 @@ import { notFound } from "next/navigation";
 export default async function EpisodePage({ params }: { params: Promise<{ epSlug: string }> }) {
 
     const { epSlug } = await params;
-    const episode = await api.get(`/episodes/${epSlug}`) as Episode;
+    const episode = await api.get(`/episodes/${epSlug}` , {
+        next: {
+            tags: [`episodes-${epSlug}`],
+        }
+    }) as Episode;
     if (!episode) {
         return notFound();
     }

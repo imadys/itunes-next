@@ -6,6 +6,7 @@ import { Loader2, Pause, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import FavoriteEpisodeButton from "./favorite-episode-button";
 
 export default function EpisodeCard({ episode }: { episode: Episode }) {
     const { currentEpisode, isPlaying, isLoading, play, pause, resume } = useAudio();
@@ -52,6 +53,7 @@ export default function EpisodeCard({ episode }: { episode: Episode }) {
                     {isCurrentlyLoading ? 'جاري التحميل...' : isCurrentlyPlaying ? 'إيقاف' : 'تشغيل الحلقة'}
                 </Button>
             </div>
+            <FavoriteEpisodeButton className="absolute top-2 left-2 z-[30]" podcastSlug={episode.podcast.id.toString()} slug={episode.id.toString()} isFavorite={episode.isFavorite} />
         </div>
     )
 }

@@ -12,7 +12,7 @@ export default async function ({ params, searchParams }: { params: Promise<{ slu
 
     const episodes = await api.get(`/episodes/podcast/${slug}/`, {
         next: {
-            tags: [`podcast-episodes-${slug}`],
+            tags: [`episodes-list-${slug}`],
         },
         params: {
             page: pageNumber,

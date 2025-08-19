@@ -4,20 +4,20 @@ import { Episode, Podcast } from "@/lib/types/podcast";
 import { VideoIcon } from "lucide-react";
 import Image from "next/image";
 import PlayButton from "@/components/play-button";
-import FavoriteButton from "@/components/podcasts/favorite-button";
+import FavoriteButton from "@/components/podcasts/favorite-podcast-button";
 
 export default async function ({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 
     const podcast = await api.get(`/podcasts/${slug}`, {
         next: {
-            tags: [`podcast-${slug}`],
+            tags: [`podcasts-${slug}`],
         }
     }) as Podcast;
 
     const latestEpisode = await api.get(`/episodes/podcast/${slug}/latest`, {
         next: {
-            tags: [`podcast-${slug}-latest-episode`],
+            tags: [`podcasts-${slug}-latest-episode`],
         }
     }) as Episode;
 

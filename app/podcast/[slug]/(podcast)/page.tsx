@@ -7,7 +7,7 @@ export default async function ({ params }: { params: Promise<{ slug: string }> }
 
     const podcast = await api.get(`/podcasts/${slug}` , {
         next: {
-            tags: [`podcast-${slug}`],
+            tags: [`podcasts-${slug}`],
         }
     }) as Podcast;
 
