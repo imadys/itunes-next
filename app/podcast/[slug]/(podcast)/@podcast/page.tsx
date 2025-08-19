@@ -7,7 +7,7 @@ import PlayButton from "@/components/play-button";
 import FavoriteButton from "@/components/podcasts/favorite-podcast-button";
 import { notFound } from "next/navigation";
 
-export default async function ({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PodcastPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 
     const podcast = await api.get(`/podcasts/${slug}`, {

@@ -53,7 +53,7 @@ export default async function ExplorePage({
             
             {searchQuery && (
                 <div className="mb-6">
-                    <h2 className="text-lg mb-4">نتائج البحث عن: "{searchQuery}"</h2>
+                    <h2 className="text-lg mb-4">نتائج البحث عن: {searchQuery}</h2>
                     
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">

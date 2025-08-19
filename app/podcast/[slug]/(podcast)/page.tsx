@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
 }
 
-export default async function ({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PodcastPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 
     const podcast = await api.get(`/podcasts/${slug}` , {

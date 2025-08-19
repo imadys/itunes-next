@@ -3,7 +3,7 @@ import { api } from "@/lib/api";
 import { ApiResponse } from "@/lib/types/api";
 import { Podcast } from "@/lib/types/podcast";
 
-export default async function () {
+export default async function FavoritesPodcastsPage() {
 
     const podcasts = await api.get("/podcasts/favorites") as ApiResponse<Podcast[]>;
 
