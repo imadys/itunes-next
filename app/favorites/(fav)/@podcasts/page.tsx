@@ -3,6 +3,9 @@ import { api } from "@/lib/api";
 import { ApiResponse } from "@/lib/types/api";
 import { Podcast } from "@/lib/types/podcast";
 
+// Force dynamic rendering to avoid build-time API calls
+export const dynamic = 'force-dynamic';
+
 export default async function FavoritesPodcastsPage() {
 
     const podcasts = await api.get("/podcasts/favorites") as ApiResponse<Podcast[]>;
