@@ -30,15 +30,15 @@ async function getAllPodcasts(): Promise<Podcast[]> {
 export default async function ExplorePage({
     searchParams,
 }: {
-    searchParams: { search?: string };
+    searchParams: Promise<{ search?: string }>;
 }) {
-    const searchQuery = searchParams.search;
+    const { search } = await searchParams;
     let podcasts: Podcast[] = [];
     let error: string | null = null;
 
     try {
-        if (searchQuery) {
-            podcasts = await searchPodcasts(searchQuery);
+        if (search) {
+            podcasts = await searchPodcasts(search);
         } else {
             podcasts = await getAllPodcasts();
         }
@@ -51,9 +51,9 @@ export default async function ExplorePage({
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-6">استكشاف</h1>
             
-            {searchQuery && (
+            {search && (
                 <div className="mb-6">
-                    <h2 className="text-lg mb-4">نتائج البحث عن: {searchQuery}</h2>
+                    <h2 className="text-lg mb-4">نتائج البحث عن: {search}</h2>
                     
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -77,7 +77,7 @@ export default async function ExplorePage({
                 </div>
             )}
             
-            {!searchQuery && (
+            {!search && (
                 <div className="mb-6">
                     <h2 className="text-lg mb-4">جميع البودكاست</h2>
                     

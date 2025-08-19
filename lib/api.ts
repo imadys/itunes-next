@@ -17,10 +17,14 @@ class ApiError extends Error {
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL
 
 if (!BACKEND_URL) {
-  console.warn('BACKEND_URL environment variable is not set')
+  console.warn('BACKEND_URL environment variable is not set. API calls will fail.')
 }
 
 function buildUrl(endpoint: string, params?: Record<string, string | number | boolean | undefined | null>): string {
+  if (!BACKEND_URL) {
+    throw new ApiError('Backend URL is not configured. Please set NEXT_PUBLIC_BACKEND_URL or BACKEND_URL environment variable.', 0)
+  }
+  
   const baseUrl = endpoint.startsWith('http') 
     ? endpoint 
     : `${BACKEND_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`

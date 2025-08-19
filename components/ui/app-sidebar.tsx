@@ -1,4 +1,4 @@
-import { Clock, Heart, Home, Search } from "lucide-react";
+import { Heart, Home, Search } from "lucide-react";
 
 import {
     Sidebar,
