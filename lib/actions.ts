@@ -8,6 +8,7 @@ export async function changePodCastFavoriteStatus(slug: string) {
     await api.post(`/podcasts/${slug}/favorite`)
 
     revalidateTag(`podcasts-${slug}`)
+    revalidateTag(`podcasts-favorites`)
 
     return { success: true, message: 'تمت إضافة البودكاست للمفضلة بنجاح' }
   } catch (error) {
@@ -21,7 +22,7 @@ export async function changeEpisodeFavoriteStatus(slug: string, podcastSlug: str
 
     revalidateTag(`episodes-${slug}`)
     revalidateTag(`episodes-list-${podcastSlug}`)
-
+    revalidateTag(`episodes-favorites`)
     return { success: true, message: 'تمت إضافة الحلقة للمفضلة بنجاح' }
   } catch (error) {
     console.error('Error adding episode to favorites:', error)

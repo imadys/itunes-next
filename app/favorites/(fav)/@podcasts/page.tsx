@@ -6,7 +6,11 @@ import { Podcast } from "@/lib/types/podcast";
 
 export default async function FavoritesPodcastsPage() {
 
-    const podcasts = await api.get("/podcasts/favorites") as ApiResponse<Podcast[]>;
+    const podcasts = await api.get("/podcasts/favorites", {
+        next: {
+            tags: ["podcasts-favorites"]
+        }
+    }) as ApiResponse<Podcast[]>;
 
     return (
         <div className="grid lg:grid-cols-5 grid-cols-1 gap-4">
